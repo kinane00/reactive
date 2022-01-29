@@ -1,0 +1,179 @@
+Walking skeleton
+
+- Intro to clean architecture
+- Creating .Net projects
+- Project architecture
+- dontnet CLI
+- .Net Project files
+- running the .net application 
+- Entity Framework
+- Seeding Data
+- Code first migrations (scafolding)
+- Postman
+
+*Prerequires
+
+.Net SDK
+VS code
+Postman
+Git
+Node.js
+
+
+*Intro to clean architecture
+
+Domain (Entities)
+Application
+API 
+Persistence (DB Migrations)
+
+
+*.Net projects
+
+- VS code (Extentions)
+Bracket pair color(CoenraadS)
+C# (Microsoft)
+C# Extensions (JosKreativ)
+Material Icon Theme (Philip kief)
+Nuget Gallery (pcislo)
+SQLite (alexcvzz)
+
+-Clean architecture
+API => Application => Domain <= Persistence
+
+*Create project 
+
+dotnet new -l
+dotnet new sln 
+dotnet new webapi -n API
+dotnet new classlib -n Application
+dotnet new classlib -n Domain
+dotnet new classlib -n Persistence
+
+dotnet sln add API/API.csproj
+dotnet sln add Application/Application.csproj
+dotnet sln add Domain
+dotnet sln add Persistence
+
+dotnet sln list
+
+cd API
+dotnet add reference ../Application
+cd ..
+cd Application
+dotnet add reference ../Persistence
+dotnet add reference ../Domain
+cd ..
+cd Persistence
+dotnet add reference ../Domain
+
+*Manage Configuration
+
+*EntityFrameWork Core Sqlite
+Add Mirosoft.EntityFrameWork to Persistence
+Add Mirosoft.EntityFrameWork.Sqlite to Persistence
+Add Mirosoft.EntityFrameWork.Design to API
+- Code First
+Create Classes in Domain
+Create Datacontext:DbContext in Persistence
+services.AddDbContext<DataContext>(opt =>
+{
+    opt.UseSqlite(_config.GetConnectionString("DefaultConnection"));
+});
+
+* EntityFramework core Migration
+
+
+dotnet tool list --global
+dotnet tool install --global dotnet-ef --version 6.0.1
+dotnet ef migrations add InitialCreate -p Persistence -s API
+
+- Scope create and migrate to program.cs -> main()
+	var host = CreateHostBuilder(args).Build();
+
+            // verify if we have the database already created. if not create new one
+            // use using to dispose variable after used
+            using var scope = host.Services.CreateScope();
+
+            var services = scope.ServiceProvider;
+            try
+            {
+                var context = services.GetRequiredService<DataContext>();
+                context.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occured during migration");
+            }
+            host.Run();
+
+dotnet watch run // this will create the database and the entity table
+
+*Source control (Git)
+
+git init
+dotnet new gitignore // add the appsettings to the ignore file
+git add .
+git commit -m "End of section"
+git remote add origin https://github.com/kinane00/reactive.git
+git push -u origin main
+
+
+
+------ Client Side : React Typescript (Fast) ----------
+
+
+npx create-react-app client-app --use-npm --template typescript
+npm start
+
+-Remove <React.StrictMode> in index.tsx
+
+- Components
+- States
+- Props
+- Virtual DOM
+- Jsx
+- React Hooks
+- UseState
+- Typescript
+- Doctyping
+- React Developer Tools
+- CORS policies 
+- npm install axios
+- useState
+- useEffect
+- npm install semantic-ui-react semantic-ui-css
+- add import 'semantic-ui-css/semantic.min.css' to index.tsx
+- remove ;;
+- clear cache
+- remove .
+
+
+------------------ CRUD using CQRS + Mediator pattern ------------
+
+- Clean architecture
+ + Independent from frameworks
+ + Testable
+ + Independent from the interface
+ + Independent from the database
+- Mediator
+ + Command : Write
+ + Query : Read
+
+Steps:
+- Install nuget in Application : MediatR.DepencyInjection
+- Add MediatR service to startup
+- Create Query Handler
+- Create Command Handler
+- Install AutoMapper.depencyInjection in Application
+Application CQRS
+- List
+- Details
+- Create
+- Edit
+- Delete
+
+
+
+

@@ -176,8 +176,12 @@ Application CQRS
 
 - StartUp class housekeeping
 
-* CancellationToken
+* CancellationToken ????
 
+
+----- Create Edit React Js
+
+- npm install uuid
 
 
 
